@@ -76,10 +76,10 @@ behaviors {
 
   mt_250_ralt: mt_250_ralt {
       compatible = "zmk,behavior-hold-tap";
-      #binding-cells = <0>;
+      #binding-cells = <2>;
       flavor = "tap-preferred";
       tapping-term-ms = <250>;
-      bindings = <&kp SEMI>, <&kp RALT>;
+      bindings = <&kp>, <&kp>;
       display-name = "Mod-Tap-RAlt";
   };
 
@@ -374,7 +374,7 @@ default_layer {
     &kp F1      &kp F2      &kp F3      &kp F4      &kp F5                                                                               &kp F6      &kp F7      &kp F8     &kp F9      &kp F10
     &grave      &kp N1      &n2         &n3         &kp N4      &kp N5                                                          &n6      &kp N7      &n8         &n9        &n0         &bslh_shift
     &kp ESC     &kp Q       &kp W       &kp E       &kp R       &kp T                                                           &kp Y    &kp U       &kp I       &kp O      &kp P       &equal_base
-    &kp TAB     &mt_250 LALT A &mt_250 LGUI S &mt_250 LCTRL D &mt_250 LSHFT F &kp G                                                           &kp H    &mt_250 RSHFT J &mt_250 RCTRL K &mt_250 RGUI L &mt_250_ralt &quote_base
+    &kp TAB     &mt_250 LALT A &mt_250 LGUI S &mt_250 LCTRL D &mt_250 LSHFT F &kp G                                                           &kp H    &mt_250 RSHFT J &mt_250 RCTRL K &mt_250 RGUI L &mt_250_ralt SEMI RALT &quote_base
     &kp CAPS    &kp Z       &kp X       &kp C       &kp V       &kp B   &lpar     &nav      &pg    &none     &none      &rpar     &kp N    &kp M       &comma      &dot       &slash_base &none
     &mo MAGIC   &kp HOME    &kp LEFT    &kp LC(LEFT)&kp UP              &kp BSPC  &kp DEL   &click &none &kp RET  &kp SPACE              &kp DOWN    &kp RC(RIGHT)&kp RIGHT &kp END     &none
   >;
@@ -393,7 +393,7 @@ bindings = <
   &kp F1      &kp F2      &kp F3      &kp F4      &kp F5                                                                                 &kp F6      &kp F7      &kp F8     &kp F9      &kp F12
   &grave      &kp N1      &n2         &n3         &kp N4      &kp N5                                                            &n6      &kp N7      &n8         &n9        &n0         &bslh_shift
   &kp ESC     &kp Q       &kp W       &kp E       &kp R       &kp T                                                             &kp Y    &kp U       &kp I       &kp O      &kp P       &equal_base
-  &kp TAB     &kp A       &kp S       &kp D       &kp F       &kp G                                                             &kp H    &kp J       &kp K       &kp L      &mt_250_ralt &quote_base
+  &kp TAB     &kp A       &kp S       &kp D       &kp F       &kp G                                                             &kp H    &kp J       &kp K       &kp L      &mt_250_ralt SEMI RALT &quote_base
   &kp CAPS    &z          &x          &kp C       &v          &kp B   &lpar     &nav      &pg    &none     &none      &rpar     &kp N    &kp M       &comma      &dot       &slash_base &none
   &mo MAGIC   &kp HOME    &kp LEFT    &kp LC(LEFT)&kp UP              &kp BSPC  &kp DEL   &click &to DEFAULT &kp RET  &kp SPACE              &kp DOWN    &kp RC(RIGHT)&kp RIGHT &kp END     &none
 >;
