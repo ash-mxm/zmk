@@ -65,6 +65,33 @@ behaviors {
       display-name = "Mod-Tap";
   };
 
+  mt_250: mod_tap_250 {
+      compatible = "zmk,behavior-hold-tap";
+      #binding-cells = <2>;
+      flavor = "tap-preferred";
+      tapping-term-ms = <250>;
+      bindings = <&kp>, <&kp>;
+      display-name = "Mod-Tap-250";
+  };
+
+  mt_250_ralt: mt_250_ralt {
+      compatible = "zmk,behavior-hold-tap";
+      #binding-cells = <0>;
+      flavor = "tap-preferred";
+      tapping-term-ms = <250>;
+      bindings = <&kp SEMI>, <&kp RALT>;
+      display-name = "Mod-Tap-RAlt";
+  };
+
+  bslh_shift: bslh_shift {
+      compatible = "zmk,behavior-hold-tap";
+      #binding-cells = <0>;
+      flavor = "tap-preferred";
+      tapping-term-ms = <250>;
+      bindings = <&kp BSLH>, <&kp LSHFT>;
+      display-name = "Backslash-Shift";
+  };
+
   n0: n0_hash {
       compatible = "zmk,behavior-mod-morph";
       #binding-cells = <0>;
@@ -230,54 +257,58 @@ behaviors {
       mods = <(MOD_LSFT|MOD_RSFT)>;
   };
 
+  // Kanata-style arrow mappings on symbol keys
+  // / key (bottom row right): Shift -> Right, Ctrl+Shift -> Left
+  slash_base: slash_base {
+      compatible = "zmk,behavior-mod-morph";
+      #binding-cells = <0>;
+      mods = <(MOD_LSFT|MOD_RSFT)>;
+      bindings = <&slash_with_shift>, <&kp FSLH>;
+  };
+  slash_with_shift: slash_with_shift {
+      compatible = "zmk,behavior-mod-morph";
+      #binding-cells = <0>;
+      mods = <(MOD_LCTL|MOD_RCTL)>;
+      bindings = <&kp LEFT>, <&kp RIGHT>;
+  };
 
-  up_arrow: up_arrow_main {
+  // = key (QWERTY row right): Ctrl+Shift -> Up
+  equal_base: equal_base {
       compatible = "zmk,behavior-mod-morph";
       #binding-cells = <0>;
       mods = <(MOD_LCTL|MOD_RCTL)>;
-      bindings = <&kp UP>, <&up_alt_check>;
+      bindings = <&equal_ctrl_held>, <&equal>;
   };
-  up_alt_check: up_alt_check {
+  equal_ctrl_held: equal_ctrl_held {
       compatible = "zmk,behavior-mod-morph";
       #binding-cells = <0>;
-      mods = <(MOD_LALT|MOD_RALT)>;
-      keep-mods = <(MOD_LALT|MOD_RALT)>; 
-      bindings = <&up_3>, <&kp UP>;
+      mods = <(MOD_LSFT|MOD_RSFT)>;
+      bindings = <&kp UP>, <&equal>;
   };
-  down_arrow: down_arrow_main {
+
+  // ' key (home row right): quote, Shift->double-quote, Ctrl+Shift->Down
+  quote_base: quote_base {
       compatible = "zmk,behavior-mod-morph";
       #binding-cells = <0>;
       mods = <(MOD_LCTL|MOD_RCTL)>;
-      bindings = <&kp DOWN>, <&down_alt_check>;
+      bindings = <&quote_ctrl_held>, <&quote_shift_check>;
   };
-  down_alt_check: down_alt_check {
+  quote_ctrl_held: quote_ctrl_held {
       compatible = "zmk,behavior-mod-morph";
       #binding-cells = <0>;
-      mods = <(MOD_LALT|MOD_RALT)>;
-      keep-mods = <(MOD_LALT|MOD_RALT)>; 
-      bindings = <&down_3>, <&kp DOWN>;
+      mods = <(MOD_LSFT|MOD_RSFT)>;
+      bindings = <&kp DOWN>, <&kp SQT>;
+  };
+  quote_shift_check: quote_shift_check {
+      compatible = "zmk,behavior-mod-morph";
+      #binding-cells = <0>;
+      mods = <(MOD_LSFT|MOD_RSFT)>;
+      bindings = <&kp DQUO>, <&kp SQT>;
   };
 
 };
 
 macros {
-  up_3: macro_up_3 {
-      compatible = "zmk,behavior-macro";
-      wait-ms = <0>;
-      tap-ms = <0>;
-      #binding-cells = <0>;
-      bindings = <&macro_press &kp LCTRL>
-            , <&macro_tap &kp UP &kp UP &kp UP>
-            , <&macro_release &kp LCTRL>;
-  };
-  down_3: macro_down_3 {
-      compatible = "zmk,behavior-macro";
-      wait-ms = <0>;
-      tap-ms = <0>;
-      #binding-cells = <0>;
-      bindings = <&macro_tap &kp DOWN &kp DOWN &kp DOWN>;
-  };
-
   bt_0: bt_profile_macro_0 {
       compatible = "zmk,behavior-macro";
       #binding-cells = <0>;
@@ -338,15 +369,15 @@ macros {
   keymap {
     compatible = "zmk,keymap";
 
-    default_layer {
-bindings = <
-  &kp F1      &kp F2      &kp F3      &kp F4      &kp F5                                                                               &kp F6      &kp F7      &kp F8     &kp F9      &kp F10
-  &grave      &kp N1      &n2         &n3         &kp N4      &kp N5                                                          &n6      &kp N7      &n8         &n9        &n0         &kp TILDE
-  &kp ESC     &kp Q       &kp W       &kp E       &kp R       &kp T                                                           &kp Y    &kp U       &kp I       &kp O      &kp P       &equal
-  &kp TAB     &mt LGUI A &mt LALT S  &mt LCTRL D &mt LSHFT F &kp G                                                           &kp H    &mt RSHFT J &mt RCTRL K &mt RALT L &sqt        &fslh_bslh
-  &kp CAPS    &z          &x          &kp C       &v          &kp B   &lpar     &nav      &pg    &kp F11   &kp F12  &rpar     &kp N    &kp M       &comma      &dot       &kp MINUS   &none
-  &mo MAGIC   &kp HOME    &kp LEFT    &kp LC(LEFT)&up_arrow           &kp BSPC  &kp DEL   &click &none &kp RET  &kp SPACE          &down_arrow &kp RC(RIGHT)&kp RIGHT &kp END     &none
->;
+default_layer {
+  bindings = <
+    &kp F1      &kp F2      &kp F3      &kp F4      &kp F5                                                                               &kp F6      &kp F7      &kp F8     &kp F9      &kp F10
+    &grave      &kp N1      &n2         &n3         &kp N4      &kp N5                                                          &n6      &kp N7      &n8         &n9        &n0         &bslh_shift
+    &kp ESC     &kp Q       &kp W       &kp E       &kp R       &kp T                                                           &kp Y    &kp U       &kp I       &kp O      &kp P       &equal_base
+    &kp TAB     &mt_250 LALT A &mt_250 LGUI S &mt_250 LCTRL D &mt_250 LSHFT F &kp G                                                           &kp H    &mt_250 RSHFT J &mt_250 RCTRL K &mt_250 RGUI L &mt_250_ralt &quote_base
+    &kp CAPS    &kp Z       &kp X       &kp C       &kp V       &kp B   &lpar     &nav      &pg    &none     &none      &rpar     &kp N    &kp M       &comma      &dot       &slash_base &none
+    &mo MAGIC   &kp HOME    &kp LEFT    &kp LC(LEFT)&kp UP              &kp BSPC  &kp DEL   &click &none &kp RET  &kp SPACE              &kp DOWN    &kp RC(RIGHT)&kp RIGHT &kp END     &none
+  >;
     };
 
 // default_lower_layer----------------------------------------------------------------------------------------------------------------------
@@ -360,11 +391,11 @@ bindings = <
     lower_layer {
 bindings = <
   &kp F1      &kp F2      &kp F3      &kp F4      &kp F5                                                                                 &kp F6      &kp F7      &kp F8     &kp F9      &kp F12
-  &grave      &kp N1      &n2         &n3         &kp N4      &kp N5                                                            &n6      &kp N7      &n8         &n9        &n0         &kp TILDE
-  &kp ESC     &kp Q       &kp W       &kp E       &kp R       &kp T                                                             &kp Y    &kp U       &kp I       &kp O      &kp P       &equal
-  &kp TAB     &kp A       &kp S       &kp D       &kp F       &kp G                                                             &kp H    &kp J       &kp K       &kp L      &sqt        &fslh_bslh
-  &kp CAPS    &z          &x          &kp C       &v          &kp B   &lpar     &nav      &pg    &none     &none      &rpar     &kp N    &kp M       &comma      &dot       &kp MINUS   &none
-  &mo MAGIC   &kp HOME    &kp LEFT    &kp LC(LEFT)&up_arrow           &kp BSPC  &kp DEL   &click &to DEFAULT &kp RET  &kp SPACE          &down_arrow &kp RC(RIGHT)&kp RIGHT &kp END     &none
+  &grave      &kp N1      &n2         &n3         &kp N4      &kp N5                                                            &n6      &kp N7      &n8         &n9        &n0         &bslh_shift
+  &kp ESC     &kp Q       &kp W       &kp E       &kp R       &kp T                                                             &kp Y    &kp U       &kp I       &kp O      &kp P       &equal_base
+  &kp TAB     &kp A       &kp S       &kp D       &kp F       &kp G                                                             &kp H    &kp J       &kp K       &kp L      &mt_250_ralt &quote_base
+  &kp CAPS    &z          &x          &kp C       &v          &kp B   &lpar     &nav      &pg    &none     &none      &rpar     &kp N    &kp M       &comma      &dot       &slash_base &none
+  &mo MAGIC   &kp HOME    &kp LEFT    &kp LC(LEFT)&kp UP              &kp BSPC  &kp DEL   &click &to DEFAULT &kp RET  &kp SPACE              &kp DOWN    &kp RC(RIGHT)&kp RIGHT &kp END     &none
 >;
     };
 
