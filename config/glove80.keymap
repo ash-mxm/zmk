@@ -303,7 +303,7 @@ behaviors {
       compatible = "zmk,behavior-mod-morph";
       #binding-cells = <0>;
       mods = <(MOD_LSFT|MOD_RSFT)>;
-      bindings = <&kp DQUO>, <&kp SQT>;
+      bindings = <&kp LS(SQT)>, <&kp SQT>;
   };
 
 };
